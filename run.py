@@ -50,7 +50,7 @@ class Ball:
 
     def collision_with_platform(self, p: Platform):
         if p.rect.x <= self.center_x <= p.rect.x + p.rect.w and \
-                self.center_y + self.radius >= p.rect.y:
+                self.center_y + self.radius >= p.rect.y and self.vector[1] > 0:
             self.vector[1] = -self.vector[1]
 
 
@@ -59,8 +59,9 @@ def main():
     size = width, height = 800, 600
     screen = pygame.display.set_mode(size)
 
-    ball = Ball(screen, 'ball.png', (int(random.random() * 10) % 6,
-                                     int(random.random() * 10) % 6))
+    ball = Ball(screen, 'ball.png',
+                (random.choice([1, -1]) * (int(random.random() * 10) % 5 + 1),
+                 random.choice([1, -1]) * (int(random.random() * 10) % 5 + 1)))
 
     p = Platform(screen)
     p_move = 0
