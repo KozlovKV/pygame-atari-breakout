@@ -1,4 +1,3 @@
-import math
 import pygame
 import random
 import sys
@@ -16,9 +15,6 @@ class Ball:
         self.img_rect = self.img.get_rect()
 
     def draw(self):
-        self.move()
-        self.img_rect.x = self.center_x - self.center_r
-        self.img_rect.y = self.center_y - self.center_r
         self.screen.blit(self.img, self.img_rect)
 
     def move(self):
@@ -30,23 +26,59 @@ class Ball:
         if self.center_y < self.center_r or \
                 self.center_y > self.screen.get_height() - self.center_r:
             self.vector[1] = -self.vector[1]
+        self.img_rect.x = self.center_x - self.center_r
+        self.img_rect.y = self.center_y - self.center_r
+
+
+class Platform:
+    def __init__(self, screen, x=10, y=570,
+                 color=(0x55, 0xDD, 0x33), w=200, h=20):
+        self.screen = screen
+        self.color = color
+        self.rect = pygame.draw.rect(screen, color, (x, y, w, h))
+
+    def draw(self):
+        pygame.draw.rect(self.screen, self.color, self.rect)
+
+    def move(self, vec_x):
+        if vec_x > 0 and vec_x + self.rect.x + self.rect.width > 800:
+            vec_x = 0
+        elif vec_x < 0 and vec_x + self.rect.x < 0:
+            vec_x = 0
+        self.rect = self.rect.move(vec_x, 0)
 
 
 def main():
     pygame.init()
     size = width, height = 800, 600
     screen = pygame.display.set_mode(size)
+
     ball = Ball(screen, 'ball.png', (int(random.random() * 10) % 6,
                                      int(random.random() * 10) % 6))
+
+    p = Platform(screen)
+    p_move = 0
+
     game_over = False
     while not game_over:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 game_over = True
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_d:
+                    p_move = 5
+                elif event.key == pygame.K_a:
+                    p_move = -5
+            elif event.type == pygame.KEYUP and \
+                    (event.key == pygame.K_d or event.key == pygame.K_a):
+                p_move = 0
+
+        ball.move()
+        p.move(p_move)
 
         screen.fill((0, 0, 0))
         ball.draw()
-        ball.move()
+        p.draw()
 
         pygame.display.flip()
         pygame.time.wait(10)
