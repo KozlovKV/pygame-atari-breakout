@@ -10,7 +10,7 @@ class CollisionHelperPointrect:
 
 
 class Platform:
-    def __init__(self, screen: pygame.Surface, speed=8, x=10, y=570,
+    def __init__(self, screen: pygame.Surface, speed=8, x=10, y=550,
                  color=(0x55, 0xDD, 0x33), w=200, h=20):
         self.screen = screen
         self.speed = speed
@@ -38,6 +38,8 @@ class Ball:
         self.radius = r
         self.img = pygame.image.load(image_name)
         self.rect = self.img.get_rect()
+        self.left_collision = False
+        self.right_collision = False
 
     def draw(self):
         self.screen.blit(self.img, self.rect)
@@ -57,17 +59,30 @@ class Ball:
         left_angle = CollisionHelperPointrect(p.rect.x, p.rect.y)
         right_angle = CollisionHelperPointrect(p.rect.right, p.rect.y)
         # top collision
-        if p.rect.collidepoint(self.center_x, self.center_y + self.radius):
+        if p.rect.collidepoint(self.center_x, self.center_y + self.radius) and \
+                not self.center_y > p.rect.y:
             self.vector[1] = -self.vector[1]
-        # collision with angles
-        elif pygame.sprite.collide_circle(self, left_angle) or \
-                pygame.sprite.collide_circle(self, right_angle):
-            self.vector = list(map(lambda x: -x, self.vector))
-        # collision lateral faces
-        elif p.rect.collidepoint(self.center_x + self.radius, self.center_y) \
+            self.left_collision = False
+            self.right_collision = False
+        # collision lateral sides
+        elif (p.rect.collidepoint(self.center_x + self.radius, self.center_y)
                 or p.rect.collidepoint(self.center_x - self.radius,
-                                       self.center_y):
+                                       self.center_y)) and \
+                not p.rect.x < self.center_x < p.rect.right:
             self.vector[0] = -self.vector[0]
+            self.left_collision = False
+            self.right_collision = False
+        # collision with angles
+        elif pygame.sprite.collide_circle(self, left_angle) and \
+                not self.left_collision:
+            self.vector = list(map(lambda x: -x, self.vector))
+            self.left_collision = True
+            self.right_collision = False
+        elif pygame.sprite.collide_circle(self, right_angle) and \
+                not self.right_collision:
+            self.vector = list(map(lambda x: -x, self.vector))
+            self.left_collision = False
+            self.right_collision = True
 
 
 def main():
@@ -76,8 +91,8 @@ def main():
     screen = pygame.display.set_mode(size)
 
     ball = Ball(screen, 'ball.png',
-                (random.choice([1, -1]) * (int(random.random() * 10) % 5 + 1),
-                 random.choice([1, -1]) * (int(random.random() * 10) % 5 + 1)))
+                (random.choice([1, -1]) * random.randint(3, 6),
+                 -random.randint(3, 6)))
 
     p = Platform(screen)
     p_move = 0
