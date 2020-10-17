@@ -48,22 +48,26 @@ class Ball:
         if self.center_x < self.radius or \
                 self.center_x > self.screen.get_width() - self.radius:
             self.vector[0] = -self.vector[0]
-        if self.center_y < self.radius or \
-                self.center_y > self.screen.get_height() - self.radius:
+        if self.center_y < self.radius:
             self.vector[1] = -self.vector[1]
         self.rect.x = self.center_x - self.radius
         self.rect.y = self.center_y - self.radius
 
     def collision_with_platform(self, p: Platform):
         left_angle = CollisionHelperPointrect(p.rect.x, p.rect.y)
-        right_angle = CollisionHelperPointrect(p.rect.x, p.rect.right)
+        right_angle = CollisionHelperPointrect(p.rect.right, p.rect.y)
         # top collision
         if p.rect.collidepoint(self.center_x, self.center_y + self.radius):
             self.vector[1] = -self.vector[1]
-        # collision on angles
+        # collision with angles
         elif pygame.sprite.collide_circle(self, left_angle) or \
                 pygame.sprite.collide_circle(self, right_angle):
             self.vector = list(map(lambda x: -x, self.vector))
+        # collision lateral faces
+        elif p.rect.collidepoint(self.center_x + self.radius, self.center_y) \
+                or p.rect.collidepoint(self.center_x - self.radius,
+                                       self.center_y):
+            self.vector[0] = -self.vector[0]
 
 
 def main():
