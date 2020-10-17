@@ -3,6 +3,12 @@ import random
 import sys
 
 
+class CollisionHelperPointrect:
+    def __init__(self, x, y):
+        self.rect = pygame.rect.Rect(x, y, 1, 1)
+        self.radius = 1
+
+
 class Platform:
     def __init__(self, screen: pygame.Surface, speed=8, x=10, y=570,
                  color=(0x55, 0xDD, 0x33), w=200, h=20):
@@ -31,10 +37,10 @@ class Ball:
         self.center_y = y
         self.radius = r
         self.img = pygame.image.load(image_name)
-        self.img_rect = self.img.get_rect()
+        self.rect = self.img.get_rect()
 
     def draw(self):
-        self.screen.blit(self.img, self.img_rect)
+        self.screen.blit(self.img, self.rect)
 
     def move(self):
         self.center_x += self.vector[0]
@@ -45,13 +51,19 @@ class Ball:
         if self.center_y < self.radius or \
                 self.center_y > self.screen.get_height() - self.radius:
             self.vector[1] = -self.vector[1]
-        self.img_rect.x = self.center_x - self.radius
-        self.img_rect.y = self.center_y - self.radius
+        self.rect.x = self.center_x - self.radius
+        self.rect.y = self.center_y - self.radius
 
     def collision_with_platform(self, p: Platform):
-        if p.rect.x <= self.center_x <= p.rect.x + p.rect.w and \
-                self.center_y + self.radius >= p.rect.y and self.vector[1] > 0:
+        left_angle = CollisionHelperPointrect(p.rect.x, p.rect.y)
+        right_angle = CollisionHelperPointrect(p.rect.x, p.rect.right)
+        # top collision
+        if p.rect.collidepoint(self.center_x, self.center_y + self.radius):
             self.vector[1] = -self.vector[1]
+        # collision on angles
+        elif pygame.sprite.collide_circle(self, left_angle) or \
+                pygame.sprite.collide_circle(self, right_angle):
+            self.vector = list(map(lambda x: -x, self.vector))
 
 
 def main():
