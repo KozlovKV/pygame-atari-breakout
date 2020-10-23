@@ -41,6 +41,14 @@ class TextBar:
                                               self.text_w, self.text_h))
 
 
+class GameOverTextBar(TextBar):
+    def __init__(self, screen: pygame.Surface, text):
+        w, h = MAIN_FONT.size(text)
+        x = (screen.get_width() - w) / 2
+        y = (screen.get_height() - h) / 2
+        super().__init__(screen, x, y, text, 10, (0, 0, 0), (0xAA, 0, 0))
+
+
 class Platform:
     def __init__(self, screen: pygame.Surface, speed=8, x=10, y=550,
                  color=(0x55, 0xDD, 0x33), w=200, h=20):
@@ -158,8 +166,7 @@ def main():
 
         if ball.is_game_over():
             game_over = True
-            game_over_msg = TextBar(screen, 400, 400, 'GAME_OVER', 10,
-                                    (0, 0, 0), (0xAA, 0, 0))
+            game_over_msg = GameOverTextBar(screen, 'GAME_OVER')
             game_over_msg.draw()
 
         pygame.display.flip()
