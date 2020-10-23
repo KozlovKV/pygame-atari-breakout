@@ -3,6 +3,11 @@ import random
 import sys
 
 
+TICK = 10
+pygame.font.init()
+MAIN_FONT = pygame.font.SysFont('Consolas', 32, True)
+
+
 class CollisionHelperPointrect:
     def __init__(self, x, y):
         self.rect = pygame.rect.Rect(x, y, 1, 1)
@@ -90,10 +95,8 @@ class Ball:
 
 def main():
     pygame.init()
-    pygame.font.init()
     size = width, height = 800, 600
     screen = pygame.display.set_mode(size)
-    main_font = pygame.font.SysFont('Consolas', 32, True)
 
     ball = Ball(screen, 'ball.png',
                 (random.choice([1, -1]) * random.randint(3, 6),
@@ -128,18 +131,18 @@ def main():
 
         if ball.is_game_over():
             game_over = True
-            font_w, font_h = main_font.size('GAME OVER')
+            font_w, font_h = MAIN_FONT.size('GAME OVER')
             font_x = (screen.get_width() - font_w) / 2
             font_y = (screen.get_height() - font_h) / 2
             game_over_rect = pygame.rect.Rect(font_x - 10, font_y - 10,
                                               font_w + 20, font_h + 20)
-            game_over_msg = main_font.render('GAME OVER', True,
+            game_over_msg = MAIN_FONT.render('GAME OVER', True,
                                              (0, 0, 0))
             pygame.draw.rect(screen, (0xAA, 0, 0), game_over_rect)
             screen.blit(game_over_msg, (font_x, font_y, font_w, font_h))
 
         pygame.display.flip()
-        pygame.time.wait(10 if not game_over else 2000)
+        pygame.time.wait(TICK if not game_over else 2000)
     sys.exit()
 
 
