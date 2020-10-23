@@ -2,7 +2,6 @@ import pygame
 import random
 import sys
 
-
 TICK = 10
 pygame.font.init()
 MAIN_FONT = pygame.font.SysFont('Consolas', 32, True)
@@ -12,6 +11,34 @@ class CollisionHelperPointrect:
     def __init__(self, x, y):
         self.rect = pygame.rect.Rect(x, y, 1, 1)
         self.radius = 1
+
+
+class TextBar:
+    def __init__(self, screen, x, y, text, padding=0,
+                 text_color=(255, 255, 255), bg_color=(0, 0, 0)):
+        self.screen = screen
+        self.x = x
+        self.y = y
+        self.text = text
+        self.padding = padding
+        self.text_color = text_color
+        self.bg_color = bg_color
+
+        self.text_w, self.text_h, self.bg_rect, self.rendered_text = [None] * 4
+        self.change_text(text)
+
+    def change_text(self, text):
+        self.text_w, self.text_h = MAIN_FONT.size(text)
+        self.bg_rect = pygame.rect.Rect(self.x - self.padding,
+                                        self.y - self.padding,
+                                        self.text_w + self.padding * 2,
+                                        self.text_h + self.padding * 2)
+        self.rendered_text = MAIN_FONT.render(self.text, True, self.text_color)
+
+    def draw(self):
+        pygame.draw.rect(self.screen, self.bg_color, self.bg_rect)
+        self.screen.blit(self.rendered_text, (self.x, self.y,
+                                              self.text_w, self.text_h))
 
 
 class Platform:
@@ -71,8 +98,8 @@ class Ball:
             self.right_collision = False
         # collision lateral sides
         elif (p.rect.collidepoint(self.center_x + self.radius, self.center_y)
-                or p.rect.collidepoint(self.center_x - self.radius,
-                                       self.center_y)) and \
+              or p.rect.collidepoint(self.center_x - self.radius,
+                                     self.center_y)) and \
                 not p.rect.x < self.center_x < p.rect.right:
             self.vector[0] = -self.vector[0]
             self.left_collision = False
@@ -131,15 +158,9 @@ def main():
 
         if ball.is_game_over():
             game_over = True
-            font_w, font_h = MAIN_FONT.size('GAME OVER')
-            font_x = (screen.get_width() - font_w) / 2
-            font_y = (screen.get_height() - font_h) / 2
-            game_over_rect = pygame.rect.Rect(font_x - 10, font_y - 10,
-                                              font_w + 20, font_h + 20)
-            game_over_msg = MAIN_FONT.render('GAME OVER', True,
-                                             (0, 0, 0))
-            pygame.draw.rect(screen, (0xAA, 0, 0), game_over_rect)
-            screen.blit(game_over_msg, (font_x, font_y, font_w, font_h))
+            game_over_msg = TextBar(screen, 400, 400, 'GAME_OVER', 10,
+                                    (0, 0, 0), (0xAA, 0, 0))
+            game_over_msg.draw()
 
         pygame.display.flip()
         pygame.time.wait(TICK if not game_over else 2000)
