@@ -17,8 +17,8 @@ class TextBar:
     def __init__(self, screen, x, y, text, padding=0,
                  text_color=(255, 255, 255), bg_color=(0, 0, 0)):
         self.screen = screen
-        self.x = x
-        self.y = y
+        self.x = x  # for bg_rect
+        self.y = y  # for bg_rect
         self.text = text
         self.padding = padding
         self.text_color = text_color
@@ -28,25 +28,43 @@ class TextBar:
         self.change_text(text)
 
     def change_text(self, text):
+        self.text = text
         self.text_w, self.text_h = MAIN_FONT.size(text)
-        self.bg_rect = pygame.rect.Rect(self.x - self.padding,
-                                        self.y - self.padding,
+        self.bg_rect = pygame.rect.Rect(self.x, self.y,
                                         self.text_w + self.padding * 2,
                                         self.text_h + self.padding * 2)
         self.rendered_text = MAIN_FONT.render(self.text, True, self.text_color)
 
     def draw(self):
         pygame.draw.rect(self.screen, self.bg_color, self.bg_rect)
-        self.screen.blit(self.rendered_text, (self.x, self.y,
+        self.screen.blit(self.rendered_text, (self.x + self.padding,
+                                              self.y + self.padding,
                                               self.text_w, self.text_h))
 
 
 class GameOverTextBar(TextBar):
-    def __init__(self, screen: pygame.Surface, text):
+    def __init__(self, screen, text):
         w, h = MAIN_FONT.size(text)
-        x = (screen.get_width() - w) / 2
-        y = (screen.get_height() - h) / 2
+        x = (screen.get_width() - w) / 2 - 10
+        y = (screen.get_height() - h) / 2 - 10
         super().__init__(screen, x, y, text, 10, (0, 0, 0), (0xAA, 0, 0))
+
+
+class ScoreBar(TextBar):
+    def __init__(self, screen, x=0, y=0):
+        super().__init__(screen, x, y, 'SCORE: 0', 10, (0, 0, 0), (0, 0xAA, 0))
+        self.ticks_count = int(1000 / TICK)
+        self.score_value = 0
+        self.current_ticks_count = 0
+
+    def do_tick(self):
+        self.current_ticks_count += 1
+        if self.current_ticks_count >= self.ticks_count:
+            self.current_ticks_count = 0
+            self.score_value += 1
+            new_str = f'SCORE: {self.score_value}'
+            print(new_str)
+            self.change_text(new_str)
 
 
 class Platform:
@@ -140,6 +158,8 @@ def main():
     p = Platform(screen)
     p_move = 0
 
+    score = ScoreBar(screen)
+
     game_over = False
     while not game_over:
         for event in pygame.event.get():
@@ -159,10 +179,12 @@ def main():
         ball.move()
         p.move(p_move)
         ball.collision_with_platform(p)
+        score.do_tick()
 
         screen.fill((0, 0, 0))
         ball.draw()
         p.draw()
+        score.draw()
 
         if ball.is_game_over():
             game_over = True
