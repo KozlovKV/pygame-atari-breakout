@@ -1,9 +1,9 @@
 import random
 import sys
 
+from bars.baseTextBar import TextBar
 from constants import *
 
-from bars.gameOverTextBar import GameOverTextBar
 from bars.scoreBar import ScoreBar
 from bars.highScoreBar import HighScoreTable
 
@@ -53,7 +53,8 @@ def main():
 
         if ball.is_game_over():
             game_over = True
-            game_over_msg = GameOverTextBar(screen, 'GAME_OVER')
+            game_over_msg = TextBar(screen, -1, 60, 'GAME OVER', 4,
+                                    (0, 0, 0), (0xAA, 0, 0), True)
             game_over_msg.draw()
             high_score = HighScoreTable(screen)
             high_score.add_new_score(f'TST {score.get_score_value()}')
