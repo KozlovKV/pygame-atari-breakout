@@ -5,6 +5,7 @@ from constants import *
 
 from bars.gameOverTextBar import GameOverTextBar
 from bars.scoreBar import ScoreBar
+from bars.highScoreBar import HighScoreTable
 
 from objects.platform import Platform
 from objects.ball import Ball
@@ -22,7 +23,7 @@ def main():
     p = Platform(screen)
     p_move = 0
 
-    score = ScoreBar(screen)
+    score = ScoreBar(screen, 5)
 
     game_over = False
     while not game_over:
@@ -54,6 +55,8 @@ def main():
             game_over = True
             game_over_msg = GameOverTextBar(screen, 'GAME_OVER')
             game_over_msg.draw()
+            high_score = HighScoreTable(screen)
+            high_score.add_new_score(f'TST {score.get_score_value()}')
 
         pygame.display.flip()
         pygame.time.wait(TICK if not game_over else 2000)
