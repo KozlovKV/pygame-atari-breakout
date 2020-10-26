@@ -58,6 +58,7 @@ def main():
             game_over_msg.draw()
             high_score = HighScoreTable(screen)
             high_score.add_new_score(f'TST {score.get_score_value()}')
+            high_score.draw()
 
         pygame.display.flip()
         pygame.time.wait(TICK if not game_over else 2000)
