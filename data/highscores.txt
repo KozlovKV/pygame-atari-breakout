@@ -1,4 +1,0 @@
-ASD 123
-AWE 123
-MAX 2
-MAX 1
