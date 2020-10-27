@@ -19,7 +19,6 @@ class HighScoreTable:
              for score in fin.readlines()]
             for score in self.score_strings:
                 score[1] = int(score[1])
-        print(self.score_strings)
 
     def write_scores(self):
         with open('./data/highscores.txt', 'w') as fout:

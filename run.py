@@ -17,9 +17,7 @@ def main():
     size = width, height = 800, 600
     screen = pygame.display.set_mode(size)
 
-    ball = Ball(screen, 'ball.png',
-                (random.choice([1, -1]) * random.randint(3, 6),
-                 -random.randint(3, 6)))
+    ball = Ball(screen, 'ball.png', (random.choice([1, -1]) * 2, -2))
 
     p = Platform(screen)
     p_move = 0

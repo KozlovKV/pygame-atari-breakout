@@ -2,7 +2,7 @@ import pygame
 
 
 class Platform:
-    def __init__(self, screen: pygame.Surface, speed=8, x=10, y=550,
+    def __init__(self, screen: pygame.Surface, speed=10, x=10, y=550,
                  color=(0x55, 0xDD, 0x33), w=200, h=20):
         self.screen = screen
         self.speed = speed
