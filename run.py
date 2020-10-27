@@ -5,6 +5,7 @@ from bars.baseTextBar import TextBar
 from constants import *
 
 from bars.scoreBar import ScoreBar
+from bars.inputBar import InputBar
 from bars.highScoreBar import HighScoreTable
 
 from objects.platform import Platform
@@ -53,11 +54,17 @@ def main():
 
         if ball.is_game_over():
             game_over = True
+
+            high_score_name = InputBar(screen, 'WRITE YOUR NICKNAME')
+            high_score_name.input_process()
+            screen.fill((0, 0, 0))
+            result = high_score_name.get_content()
+
             game_over_msg = TextBar(screen, -1, 60, 'GAME OVER', 4,
                                     (0, 0, 0), (0xAA, 0, 0), True)
             game_over_msg.draw()
             high_score = HighScoreTable(screen)
-            high_score.add_new_score(f'TST {score.get_score_value()}')
+            high_score.add_new_score(f'{result} {score.get_score_value()}')
             high_score.draw()
 
         pygame.display.flip()

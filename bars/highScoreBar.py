@@ -19,7 +19,6 @@ class HighScoreTable:
              for score in fin.readlines()]
             for score in self.score_strings:
                 score[1] = int(score[1])
-        print('READ')
         print(self.score_strings)
 
     def write_scores(self):
@@ -32,8 +31,6 @@ class HighScoreTable:
         self.score_strings.append([score.split(' ')[0],
                                    int(score.split(' ')[1])])
         self.sort_scores()
-        print('ADDED')
-        print(self.score_strings)
 
     def sort_scores(self):
         for i in range(len(self.score_strings)):
@@ -41,6 +38,10 @@ class HighScoreTable:
                 if self.score_strings[j - 1][1] < self.score_strings[j][1]:
                     self.score_strings[j - 1], self.score_strings[j] = \
                         self.score_strings[j], self.score_strings[j - 1]
+                elif self.score_strings[j - 1][1] == self.score_strings[j][1]:
+                    if self.score_strings[j - 1][0] > self.score_strings[j][0]:
+                        self.score_strings[j - 1], self.score_strings[j] = \
+                            self.score_strings[j], self.score_strings[j - 1]
 
     def draw(self, y=100):
         header = TextBar(self.screen, -1, y, 'HIGHSCORES:', 4,
@@ -55,4 +56,3 @@ class HighScoreTable:
                                 (0, 0, 0), (0xAA, 0xAA, 0), True)
             i += 1
             score_bar.draw()
-        print('DRAW')
