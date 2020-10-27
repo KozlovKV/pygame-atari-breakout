@@ -1,10 +1,12 @@
 import random
 import sys
 
+from bars.baseTextBar import TextBar
 from constants import *
 
-from bars.gameOverTextBar import GameOverTextBar
 from bars.scoreBar import ScoreBar
+from bars.inputBar import InputBar
+from bars.highScoreBar import HighScoreTable
 
 from objects.platform import Platform
 from objects.ball import Ball
@@ -22,7 +24,7 @@ def main():
     p = Platform(screen)
     p_move = 0
 
-    score = ScoreBar(screen)
+    score = ScoreBar(screen, 5)
 
     game_over = False
     while not game_over:
@@ -52,8 +54,18 @@ def main():
 
         if ball.is_game_over():
             game_over = True
-            game_over_msg = GameOverTextBar(screen, 'GAME_OVER')
+
+            high_score_name = InputBar(screen, 'WRITE YOUR NICKNAME')
+            high_score_name.input_process()
+            screen.fill((0, 0, 0))
+            result = high_score_name.get_content()
+
+            game_over_msg = TextBar(screen, -1, 60, 'GAME OVER', 4,
+                                    (0, 0, 0), (0xAA, 0, 0), True)
             game_over_msg.draw()
+            high_score = HighScoreTable(screen)
+            high_score.add_new_score(f'{result} {score.get_score_value()}')
+            high_score.draw()
 
         pygame.display.flip()
         pygame.time.wait(TICK if not game_over else 2000)
