@@ -1,15 +1,15 @@
 import random
 import sys
 
-from bars.baseTextBar import TextBar
+from objects.interface_objects.baseTextBar import TextBar
 from constants import *
 
-from bars.scoreBar import ScoreBar
-from bars.inputBar import InputBar
-from bars.highScoreBar import HighScoreTable
+from objects.interface_objects.scoreBar import ScoreBar
+from objects.interface_objects.inputBar import InputBar
+from objects.interface_objects.highScoreBar import HighScoreTable
 
-from objects.platform import Platform
-from objects.ball import Ball
+from objects.gameplay_objects.platform import Platform
+from objects.gameplay_objects.ball import Ball
 
 
 def main():

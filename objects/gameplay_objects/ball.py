@@ -1,8 +1,8 @@
 import pygame
 
-from objects.helpPoint import CollisionHelperPointrect
-from objects.platform import Platform
-from objects.speedVector import SpeedVector
+from objects.gameplay_objects.helpPoint import CollisionHelperPointrect
+from objects.gameplay_objects.platform import Platform
+from objects.gameplay_objects.speedVector import SpeedVector
 
 
 class Ball:

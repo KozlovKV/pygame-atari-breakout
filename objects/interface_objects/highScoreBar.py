@@ -1,7 +1,4 @@
-from bars.baseTextBar import TextBar
-from bars.scoreBar import ScoreBar
-
-from constants import MAIN_FONT
+from objects.interface_objects.baseTextBar import TextBar
 
 
 class HighScoreTable:

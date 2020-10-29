@@ -1,4 +1,4 @@
-from bars.baseTextBar import TextBar
+from objects.interface_objects.baseTextBar import TextBar
 from constants import TICK
 
 

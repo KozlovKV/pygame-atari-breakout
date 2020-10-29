@@ -1,11 +1,11 @@
 import pygame
 
-from bars.baseTextBar import TextBar
+from objects.interface_objects.baseTextBar import TextBar
 
 from constants import TICK, MAIN_FONT
 
 
-class InputBar():
+class InputBar:
     def __init__(self, screen, label='', x=-1, y=260, length=3):
         self.screen = screen
         self.label = TextBar(screen, x, y, label, 4,
