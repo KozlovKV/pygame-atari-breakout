@@ -2,8 +2,8 @@ from objects.interface_objects.baseTextBar import TextBar
 
 
 class HighScoreTable:
-    def __init__(self, screen):
-        self.screen = screen
+    def __init__(self, game):
+        self.game = game
         self.score_strings = list()
         self.read_scores()
 
@@ -39,8 +39,11 @@ class HighScoreTable:
                         self.score_strings[j - 1], self.score_strings[j] = \
                             self.score_strings[j], self.score_strings[j - 1]
 
+    def events(self):
+        pass
+
     def draw(self, y=100):
-        header = TextBar(self.screen, -1, y, 'HIGHSCORES:', 4,
+        header = TextBar(self.game, -1, y, 'HIGHSCORES:', 4,
                          (0, 0, 0), (0xAA, 0xAA, 0), True)
         header.draw()
         i = 0
@@ -48,7 +51,7 @@ class HighScoreTable:
             score = self.score_strings[i]
             text_score = score[0] + ' ' + str(score[1])
             y += 40
-            score_bar = TextBar(self.screen, -1, y, text_score, 4,
+            score_bar = TextBar(self.game, -1, y, text_score, 4,
                                 (0, 0, 0), (0xAA, 0xAA, 0), True)
             i += 1
             score_bar.draw()

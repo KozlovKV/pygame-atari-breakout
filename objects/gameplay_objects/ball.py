@@ -1,31 +1,33 @@
 import pygame
 
+from objects.gameplay_objects.baseDrawableObject import BaseDrawableObject
 from objects.gameplay_objects.helpPoint import CollisionHelperPointrect
 from objects.gameplay_objects.platform import Platform
 from objects.gameplay_objects.speedVector import SpeedVector
 
 
-class Ball:
-    def __init__(self, screen: pygame.Surface, image_name,
-                 vector, x=400, y=300, r=50):
-        self.screen = screen
+class Ball(BaseDrawableObject):
+    image_name = 'ball.png'
+
+    def __init__(self, game, vector, x=400, y=300, r=50):
+        super().__init__(game)
         self.vector = SpeedVector(vector[0], vector[1])
         self.center_x = x
         self.center_y = y
         self.radius = r
-        self.img = pygame.image.load(image_name)
+        self.img = pygame.image.load(self.image_name)
         self.rect = self.img.get_rect()
         self.left_collision = False
         self.right_collision = False
 
-    def draw(self):
-        self.screen.blit(self.img, self.rect)
+    def logic(self):
+        self.move()
 
     def move(self):
         self.center_x += self.vector.get_x()
         self.center_y += self.vector.get_y()
         if self.center_x < self.radius or \
-                self.center_x > self.screen.get_width() - self.radius:
+                self.center_x > self.game.screen.get_width() - self.radius:
             self.vector.invert_x()
         if self.center_y < self.radius:
             self.vector.invert_y()
@@ -75,4 +77,7 @@ class Ball:
         return False
 
     def is_game_over(self):
-        return self.center_y >= self.screen.get_height()
+        return self.center_y >= self.game.screen.get_height()
+
+    def draw(self):
+        self.game.screen.blit(self.img, self.rect)
