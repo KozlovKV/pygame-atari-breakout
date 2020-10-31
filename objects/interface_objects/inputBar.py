@@ -20,27 +20,26 @@ class InputBar:
                                             self.input.y + self.input.padding,
                                             2, 32)
 
-    def events(self):
+    def events(self, event):
         if not self.input_end:
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_BACKSPACE:
-                        if self.content_index > 0:
-                            self.content_index -= 1
-                            self.content[self.content_index] = ' '
-                            self.cursor_rect.x -= MAIN_FONT.size(' ')[0]
-                    elif event.key == pygame.K_RETURN or \
-                            event.key == pygame.QUIT:
-                        self.input_end = True
-                        self.game.input_time = False
-                    elif self.content_index < len(self.content) \
-                            and (65 <= event.key <= 90 or
-                                 97 <= event.key <= 122):
-                        self.content[self.content_index] = \
-                            chr(event.key).upper()
-                        self.content_index += 1
-                        self.cursor_rect.x += MAIN_FONT.size(' ')[0]
-                    self.input.change_text(''.join(self.content))
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_BACKSPACE:
+                    if self.content_index > 0:
+                        self.content_index -= 1
+                        self.content[self.content_index] = ' '
+                        self.cursor_rect.x -= MAIN_FONT.size(' ')[0]
+                elif event.key == pygame.K_RETURN or \
+                        event.key == pygame.QUIT:
+                    self.input_end = True
+                    self.game.input_time = False
+                elif self.content_index < len(self.content) \
+                        and (65 <= event.key <= 90 or
+                             97 <= event.key <= 122):
+                    self.content[self.content_index] = \
+                        chr(event.key).upper()
+                    self.content_index += 1
+                    self.cursor_rect.x += MAIN_FONT.size(' ')[0]
+                self.input.change_text(''.join(self.content))
 
     def draw(self):
         if not self.input_end:

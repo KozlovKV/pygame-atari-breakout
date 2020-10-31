@@ -25,6 +25,19 @@ class Game:
         self.input_time = False
         self.score = 0
 
+    @staticmethod
+    def exit_button_pressed(event):
+        return event.type == pygame.QUIT
+
+    @staticmethod
+    def exit_hotkey_pressed(event):
+        return event.type == pygame.KEYDOWN and event.mod & pygame.KMOD_CTRL \
+               and event.key == pygame.K_q
+
+    def any_exit_command(self, event):
+        return Game.exit_button_pressed(event) or \
+               Game.exit_hotkey_pressed(event)
+
     def main_loop(self):
         while not self.game_over:
             self.all_events()
@@ -33,7 +46,8 @@ class Game:
             pygame.time.wait(TICK)
 
     def all_events(self):
-        self.scenes[self.cur_scene_index].events()
+        for event in pygame.event.get():
+            self.scenes[self.cur_scene_index].events(event)
 
     def all_logic(self):
         self.scenes[self.cur_scene_index].logic()

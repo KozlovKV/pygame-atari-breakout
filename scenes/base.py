@@ -3,9 +3,9 @@ class BaseScene:
         self.game = game
         self.objects = []
 
-    def events(self):
+    def events(self, event):
         for object in self.objects:
-            object.events()
+            object.events(event)
 
     def logic(self):
         for object in self.objects:

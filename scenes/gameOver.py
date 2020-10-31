@@ -17,11 +17,10 @@ class GameOverScene(BaseScene):
         self.h_score_table = HighScoreTable(game)
         self.objects.append(self.h_score_table)
 
-    def events(self):
-        super(GameOverScene, self).events()
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.game.game_over = True
+    def events(self, event):
+        super(GameOverScene, self).events(event)
+        if self.game.any_exit_command(event):
+            self.game.game_over = True
 
     def logic(self):
         if self.h_score_name.input_end and \

@@ -12,18 +12,17 @@ class Platform(BaseDrawableObject):
         self.color = color
         self.rect = pygame.draw.rect(self.game.screen, color, (x, y, w, h))
 
-    def events(self):
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_d:
-                    self.vec_x += 1
-                elif event.key == pygame.K_a:
-                    self.vec_x -= 1
-            elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_d:
-                    self.vec_x -= 1
-                elif event.key == pygame.K_a:
-                    self.vec_x += 1
+    def events(self, event):
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_d:
+                self.vec_x += 1
+            elif event.key == pygame.K_a:
+                self.vec_x -= 1
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_d:
+                self.vec_x -= 1
+            elif event.key == pygame.K_a:
+                self.vec_x += 1
 
     def logic(self):
         self.move()

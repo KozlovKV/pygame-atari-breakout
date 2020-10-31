@@ -41,7 +41,7 @@ class HighScoreTable:
                         self.score_strings[j - 1], self.score_strings[j] = \
                             self.score_strings[j], self.score_strings[j - 1]
 
-    def events(self):
+    def events(self, event):
         pass
 
     def draw(self, y=100):

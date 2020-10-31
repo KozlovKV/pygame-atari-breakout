@@ -18,11 +18,10 @@ class GameScene(BaseScene):
         self.score_bar = ScoreBar(game)
         self.objects.append(self.score_bar)
 
-    def events(self):
-        super(GameScene, self).events()
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.game_over()
+    def events(self, event):
+        super(GameScene, self).events(event)
+        if self.game.any_exit_command(event):
+            self.game_over()
 
     def logic(self):
         super(GameScene, self).logic()

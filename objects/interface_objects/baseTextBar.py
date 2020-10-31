@@ -36,7 +36,7 @@ class TextBar:
                                         self.text_h + self.padding * 2)
         self.rendered_text = MAIN_FONT.render(self.text, True, self.text_color)
 
-    def events(self):
+    def events(self, event):
         pass
 
     def logic(self):
