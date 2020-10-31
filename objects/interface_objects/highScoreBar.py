@@ -6,6 +6,7 @@ class HighScoreTable:
         self.game = game
         self.score_strings = list()
         self.read_scores()
+        self.count_new_scores = 0
 
     def __del__(self):
         self.write_scores()
@@ -26,6 +27,7 @@ class HighScoreTable:
     def add_new_score(self, score: str):
         self.score_strings.append([score.split(' ')[0],
                                    int(score.split(' ')[1])])
+        self.count_new_scores += 1
         self.sort_scores()
 
     def sort_scores(self):

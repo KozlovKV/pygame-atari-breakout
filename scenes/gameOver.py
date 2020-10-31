@@ -9,7 +9,7 @@ from scenes.base import BaseScene
 class GameOverScene(BaseScene):
     def __init__(self, game):
         super().__init__(game)
-        self.h_score_name = InputBar(game)
+        self.h_score_name = InputBar(game, 'WRITE YOUR NICKNAME:')
         self.objects.append(self.h_score_name)
         self.game_over_msg = TextBar(game, -1, 60, 'GAME OVER', 4,
                                      (0, 0, 0), (0xAA, 0, 0), True)
@@ -24,7 +24,8 @@ class GameOverScene(BaseScene):
                 self.game.game_over = True
 
     def logic(self):
-        if self.h_score_name.input_end:
+        if self.h_score_name.input_end and \
+                self.h_score_table.count_new_scores == 0:
             result = self.h_score_name.get_content()
             score = self.game.score
             self.h_score_table.add_new_score(f'{result} {score}')

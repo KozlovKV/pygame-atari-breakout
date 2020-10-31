@@ -16,12 +16,14 @@ class Platform(BaseDrawableObject):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_d:
-                    self.vec_x = 1
+                    self.vec_x += 1
                 elif event.key == pygame.K_a:
-                    self.vec_x = -1
+                    self.vec_x -= 1
             elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_d or event.key == pygame.K_a:
-                    self.vec_x = 0
+                if event.key == pygame.K_d:
+                    self.vec_x -= 1
+                elif event.key == pygame.K_a:
+                    self.vec_x += 1
 
     def logic(self):
         self.move()
@@ -30,8 +32,9 @@ class Platform(BaseDrawableObject):
         pygame.draw.rect(self.game.screen, self.color, self.rect)
 
     def move(self):
-        if self.vec_x > 0 and self.rect.x + self.rect.w >= 800:
-            self.vec_x = 0
-        elif self.vec_x < 0 and self.rect.x <= 0:
-            self.vec_x = 0
-        self.rect = self.rect.move(self.vec_x * self.speed, 0)
+        new_x = self.rect.x + self.vec_x * self.speed
+        if new_x > self.game.WIDTH - self.rect.w:
+            new_x = self.game.WIDTH - self.rect.w
+        elif new_x < 0:
+            new_x = 0
+        self.rect.x = new_x

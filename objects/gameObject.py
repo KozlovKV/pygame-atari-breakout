@@ -22,6 +22,7 @@ class Game:
             GameOverScene(self)
         ]
         self.game_over = False
+        self.input_time = False
         self.score = 0
 
     def main_loop(self):
