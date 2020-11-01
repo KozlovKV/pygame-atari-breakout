@@ -25,7 +25,7 @@ class GameScene(BaseScene):
 
     def logic(self):
         super(GameScene, self).logic()
-        self.ball.collision_with_platform(self.moving_platform)
+        self.moving_platform.collide_with_ball(self.ball)
         if self.ball.is_game_over():
             self.game_over()
 

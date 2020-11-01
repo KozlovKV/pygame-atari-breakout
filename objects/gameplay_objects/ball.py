@@ -1,8 +1,6 @@
 import pygame
 
 from objects.gameplay_objects.baseDrawableObject import BaseDrawableObject
-from objects.gameplay_objects.helpPoint import CollisionHelperPointrect
-from objects.gameplay_objects.platform import Platform
 from objects.gameplay_objects.speedVector import SpeedVector
 
 
@@ -13,8 +11,6 @@ class Ball(BaseDrawableObject):
         self.center_x = x
         self.center_y = y
         self.radius = r
-        self.left_collision = False
-        self.right_collision = False
 
     def logic(self):
         self.move()
@@ -25,55 +21,27 @@ class Ball(BaseDrawableObject):
         if self.center_x < self.radius or \
                 self.center_x > self.game.screen.get_width() - self.radius:
             self.vector.invert_x()
-        if self.center_y < self.radius:
+        if self.center_y < self.radius \
+                or self.center_y > self.game.screen.get_height() - self.radius:
             self.vector.invert_y()
         self.rect.x = self.center_x - self.radius
         self.rect.y = self.center_y - self.radius
 
-    def collision_with_platform(self, p: Platform):
-        if self.top_collision(p) or self.side_collision(p) or \
-                self.angles_collision(p):
-            self.vector.speed_up()
+    def horizontal_collision_reaction(self):
+        self.vector.speed_up()
+        self.vector.invert_y()
 
-    def top_collision(self, p: Platform):
-        if p.rect.collidepoint(self.center_x, self.center_y + self.radius) and \
-                not self.center_y > p.rect.y:
-            self.vector.invert_y()
-            self.left_collision = False
-            self.right_collision = False
-            return True
-        return False
+    def vertical_collision_reaction(self):
+        self.vector.speed_up()
+        self.vector.invert_x()
 
-    def side_collision(self, p: Platform):
-        if (p.rect.collidepoint(self.center_x + self.radius, self.center_y)
-            or p.rect.collidepoint(self.center_x - self.radius,
-                                   self.center_y)) and \
-                not p.rect.x < self.center_x < p.rect.right:
-            self.vector.invert_x()
-            self.left_collision = False
-            self.right_collision = False
-            return True
-        return False
-
-    def angles_collision(self, p: Platform):
-        left_angle = CollisionHelperPointrect(p.rect.x, p.rect.y)
-        right_angle = CollisionHelperPointrect(p.rect.right, p.rect.y)
-        if pygame.sprite.collide_circle(self, left_angle) and \
-                not self.left_collision:
-            self.vector.invert_vector()
-            self.left_collision = True
-            self.right_collision = False
-            return True
-        elif pygame.sprite.collide_circle(self, right_angle) and \
-                not self.right_collision:
-            self.vector.invert_vector()
-            self.left_collision = False
-            self.right_collision = True
-            return True
-        return False
+    def angle_collision_reaction(self):
+        self.vector.speed_up()
+        self.vector.invert_vector()
 
     def is_game_over(self):
-        return self.center_y >= self.game.screen.get_height()
+        return False
+        # return self.center_y >= self.game.screen.get_height()
 
     def draw(self):
         pygame.draw.circle(self.game.screen, self.color,
