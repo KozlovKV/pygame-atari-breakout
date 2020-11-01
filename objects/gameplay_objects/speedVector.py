@@ -1,5 +1,5 @@
 class SpeedVector:
-    def __init__(self, x, y, max_=12):
+    def __init__(self, x, y, max_=10):
         self.max_speed = max_
         self.x_move = -1 if x < 0 else 1
         self.y_move = -1 if y < 0 else 1

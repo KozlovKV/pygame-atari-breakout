@@ -1,6 +1,11 @@
+import pygame
+
+
 class BaseDrawableObject:
-    def __init__(self, game):
+    def __init__(self, game, x, y, w, h, color):
         self.game = game
+        self.color = color
+        self.rect = pygame.rect.Rect(x, y, w, h)
 
     def events(self, event):
         pass
@@ -9,4 +14,4 @@ class BaseDrawableObject:
         pass
 
     def draw(self):
-        pass
+        pygame.draw.rect(self.game.screen, self.color, self.rect)

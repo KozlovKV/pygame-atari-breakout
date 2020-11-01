@@ -4,13 +4,11 @@ from objects.gameplay_objects.baseDrawableObject import BaseDrawableObject
 
 
 class Platform(BaseDrawableObject):
-    def __init__(self, game, speed=10, x=10, y=550, color=(0x55, 0xDD, 0x33),
+    def __init__(self, game, speed=8, x=10, y=550, color=(0x55, 0xDD, 0x33),
                  w=200, h=20):
-        super().__init__(game)
+        super().__init__(game, x, y, w, h, color)
         self.speed = speed
         self.vec_x = 0
-        self.color = color
-        self.rect = pygame.draw.rect(self.game.screen, color, (x, y, w, h))
 
     def events(self, event):
         if event.type == pygame.KEYDOWN:
@@ -26,9 +24,6 @@ class Platform(BaseDrawableObject):
 
     def logic(self):
         self.move()
-
-    def draw(self):
-        pygame.draw.rect(self.game.screen, self.color, self.rect)
 
     def move(self):
         new_x = self.rect.x + self.vec_x * self.speed

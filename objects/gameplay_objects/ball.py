@@ -7,16 +7,12 @@ from objects.gameplay_objects.speedVector import SpeedVector
 
 
 class Ball(BaseDrawableObject):
-    image_name = 'ball.png'
-
-    def __init__(self, game, vector, x=400, y=300, r=50):
-        super().__init__(game)
+    def __init__(self, game, vector, color=(196, 32, 32), x=400, y=300, r=25):
+        super().__init__(game, x-r, y-r, 2*r, 2*r, color)
         self.vector = SpeedVector(vector[0], vector[1])
         self.center_x = x
         self.center_y = y
         self.radius = r
-        self.img = pygame.image.load(self.image_name)
-        self.rect = self.img.get_rect()
         self.left_collision = False
         self.right_collision = False
 
@@ -80,4 +76,5 @@ class Ball(BaseDrawableObject):
         return self.center_y >= self.game.screen.get_height()
 
     def draw(self):
-        self.game.screen.blit(self.img, self.rect)
+        pygame.draw.circle(self.game.screen, self.color,
+                           (self.center_x, self.center_y), self.radius)
