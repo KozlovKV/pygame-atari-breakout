@@ -12,7 +12,7 @@ class GameOverScene(BaseScene):
         self.h_score_name = InputBar(game, 'WRITE YOUR NICKNAME:')
         self.objects.append(self.h_score_name)
         self.game_over_msg = TextBar(game, -1, 60, 'GAME OVER', 4,
-                                     (0, 0, 0), (0xAA, 0, 0), True)
+                                     (0, 0, 0), (0xAA, 0, 0))
         self.objects.append(self.game_over_msg)
         self.h_score_table = HighScoreTable(game)
         self.objects.append(self.h_score_table)

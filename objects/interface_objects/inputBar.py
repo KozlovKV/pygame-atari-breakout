@@ -8,13 +8,12 @@ from constants import TICK, MAIN_FONT
 class InputBar:
     def __init__(self, game, label='', x=-1, y=260, length=3):
         self.game = game
-        self.label = TextBar(game, x, y, label, 4,
-                             (255, 255, 255), (64, 64, 64), x == -1, y == -1) \
-            if label != '' else ''
+        self.label = TextBar(game, x, y, label, 4, (255, 255, 255),
+                             (64, 64, 64)) if label != '' else ''
         self.content = [' '] * length
         self.content_index = 0
         self.input = TextBar(game, x, y + 40, ''.join(self.content), 4,
-                             (255, 255, 255), (64, 64, 64), x == -1, y == -1)
+                             (255, 255, 255), (64, 64, 64))
         self.input_end = False
         self.cursor_rect = pygame.rect.Rect(self.input.x + self.input.padding,
                                             self.input.y + self.input.padding,

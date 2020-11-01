@@ -46,7 +46,7 @@ class HighScoreTable:
 
     def draw(self, y=100):
         header = TextBar(self.game, -1, y, 'HIGHSCORES:', 4,
-                         (0, 0, 0), (0xAA, 0xAA, 0), True)
+                         (0, 0, 0), (0xAA, 0xAA, 0))
         header.draw()
         i = 0
         while i < len(self.score_strings) and i < 10:
@@ -54,6 +54,6 @@ class HighScoreTable:
             text_score = score[0] + ' ' + str(score[1])
             y += 40
             score_bar = TextBar(self.game, -1, y, text_score, 4,
-                                (0, 0, 0), (0xAA, 0xAA, 0), True)
+                                (0, 0, 0), (0xAA, 0xAA, 0))
             i += 1
             score_bar.draw()

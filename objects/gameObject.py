@@ -9,15 +9,15 @@ from scenes.menu import MenuScene
 
 class Game:
     SIZE = WIDTH, HEIGHT = 800, 600
-    # SCENE_MENU = 0
-    SCENE_GAME = 0
-    SCENE_GAME_OVER = 1
+    SCENE_MENU = 0
+    SCENE_GAME = 1
+    SCENE_GAME_OVER = 2
 
     def __init__(self):
         self.screen = pygame.display.set_mode(self.SIZE)
         self.cur_scene_index = 0
         self.scenes = [
-            # MenuScene(self),
+            MenuScene(self),
             GameScene(self),
             GameOverScene(self)
         ]
@@ -34,9 +34,13 @@ class Game:
         return event.type == pygame.KEYDOWN and event.mod & pygame.KMOD_CTRL \
                and event.key == pygame.K_q
 
+    @staticmethod
+    def esc_pressed(event):
+        return event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE
+
     def any_exit_command(self, event):
         return Game.exit_button_pressed(event) or \
-               Game.exit_hotkey_pressed(event)
+               Game.exit_hotkey_pressed(event) or Game.esc_pressed(event)
 
     def main_loop(self):
         while not self.game_over:
