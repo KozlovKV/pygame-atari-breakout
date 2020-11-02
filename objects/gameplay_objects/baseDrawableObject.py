@@ -16,7 +16,11 @@ class BaseDrawableObject:
         pass
 
     def collide_with_ball(self, ball):
-        return self.sides_collision(ball) or self.angles_collision(ball)
+        if self.sides_collision(ball):
+            return True
+        if self.angles_collision(ball):
+            return True
+        return False
 
     def sides_collision(self, ball):
         ball_points = [
@@ -31,6 +35,8 @@ class BaseDrawableObject:
                     ball.horizontal_collision_reaction()
                 else:
                     ball.vertical_collision_reaction()
+                return True
+        return False
         '''
         Альтернативный вариант - записать в отдельный список определённые 
         стороны прямоугольника, чтобы проверять коллизию именно с ними
@@ -46,6 +52,8 @@ class BaseDrawableObject:
         for i in range(len(angles_points)):
             if pygame.sprite.collide_circle(ball, angles_points[i]):
                 ball.angle_collision_reaction()
+                return True
+        return False
         '''
         Альтерантивный вариант - проверять коллизию с шариком как 
         прямоугольник-точка и затем проверять расстояние от точки до центра
@@ -57,6 +65,8 @@ class BaseDrawableObject:
         #     (self.rect.x, self.rect.y + self.rect.h)
         # ]
 
+    def undraw(self):
+        self.color = pygame.color.Color(0, 0, 0, 0)
 
     def draw(self):
         pygame.draw.rect(self.game.screen, self.color, self.rect)

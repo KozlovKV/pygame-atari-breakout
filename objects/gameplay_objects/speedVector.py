@@ -1,5 +1,5 @@
 class SpeedVector:
-    def __init__(self, x, y, max_=10):
+    def __init__(self, x, y, max_=6):
         self.max_speed = max_
         self.x_move = -1 if x < 0 else 1
         self.y_move = -1 if y < 0 else 1
@@ -24,6 +24,12 @@ class SpeedVector:
     def invert_vector(self):
         self.invert_x()
         self.invert_y()
+
+    def change_x(self, delta):
+        self.x += delta
+
+    def change_y(self, delta):
+        self.y += delta
 
     def speed_up(self, delta=1):
         self.x = self.x + delta \
