@@ -1,3 +1,5 @@
+from random import randint
+
 import pygame
 
 from objects.gameplay_objects.baseDrawableObject import BaseDrawableObject
@@ -44,6 +46,9 @@ class Ball(BaseDrawableObject):
 
     def angle_collision_reaction(self):
         self.vector.invert_vector()
+
+    def change_radius(self, left, right):
+        self.radius = randint(left, right)
 
     def is_game_over(self):
         # return False

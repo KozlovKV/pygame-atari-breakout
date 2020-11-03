@@ -41,6 +41,7 @@ class Platform(BaseDrawableObject):
             ball.vector.change_x(abs(self.vec_x * self.speed))
             ball.move()
             ball.vector.change_x(-abs(self.vec_x * self.speed))
+            ball.change_radius(16, 30)
             return True
         return False
 
