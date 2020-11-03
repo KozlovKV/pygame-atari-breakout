@@ -7,7 +7,7 @@ from objects.gameplay_objects.helpPoint import HelpPoint
 
 
 class Platform(BaseDrawableObject):
-    def __init__(self, game, speed=6, x=10, y=550, color=(0x55, 0xDD, 0x33),
+    def __init__(self, game, speed=8, color=(0x55, 0xDD, 0x33),
                  w=150, h=20):
         super().__init__(game, randint(0, game.WIDTH - w), game.HEIGHT - h - 5,
                          w, h, color)
@@ -41,7 +41,7 @@ class Platform(BaseDrawableObject):
             ball.vector.change_x(abs(self.vec_x * self.speed))
             ball.move()
             ball.vector.change_x(-abs(self.vec_x * self.speed))
-            ball.change_radius(16, 30)
+            ball.change_radius(20, 30)
             return True
         return False
 

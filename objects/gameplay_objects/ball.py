@@ -7,7 +7,7 @@ from objects.gameplay_objects.speedVector import SpeedVector
 
 
 class Ball(BaseDrawableObject):
-    def __init__(self, game, vector, color=(196, 32, 32), x=400, y=400, r=25):
+    def __init__(self, game, vector, color=(196, 32, 32), x=400, y=500, r=25):
         super().__init__(game, x-r, y-r, 2*r, 2*r, color)
         self.vector = SpeedVector(vector[0], vector[1])
         self.center_x = x
