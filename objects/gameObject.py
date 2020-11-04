@@ -9,6 +9,7 @@ from scenes.menu import MenuScene
 
 class Game:
     SIZE = WIDTH, HEIGHT = 800, 600
+    MAIN_THEME_MUSIC = 'sound/main_theme.ogg'
     SCENE_MENU = 0
     SCENE_GAME = 1
     SCENE_GAME_OVER = 2
@@ -29,6 +30,9 @@ class Game:
         self.game_over = False
         self.input_time = False
         self.score = 0
+
+        pygame.mixer.music.load(Game.MAIN_THEME_MUSIC)
+        pygame.mixer.music.play(-1)
 
     @staticmethod
     def exit_button_pressed(event):
@@ -65,6 +69,19 @@ class Game:
         self.screen.fill((0, 0, 0))
         self.scenes[self.cur_scene_index].draw()
         pygame.display.flip()
+
+    def reload(self):
+        self.cur_scene_index = 0
+        self.scenes = [
+            MenuScene(self),
+            GameScene(self),
+            GameOverScene(self)
+        ]
+        self.game_status = 0
+        self.infinite = False
+        self.game_over = False
+        self.input_time = False
+        self.score = 0
 
     def change_scene(self, index):
         self.cur_scene_index = index

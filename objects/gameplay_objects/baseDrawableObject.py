@@ -17,8 +17,8 @@ class BaseDrawableObject:
         pass
 
     def collide_with_ball(self, ball):
-        # if self.angles_collision(ball):
-        #     return True
+        if self.angles_collision(ball):
+            return True
         if self.sides_collision(ball):
             return True
         return False

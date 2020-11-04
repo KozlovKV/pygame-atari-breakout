@@ -1,5 +1,6 @@
 from random import randint
 
+from constants import BRICK_COLLIDE_SOUND
 from misc import get_random_color
 from objects.gameplay_objects.baseDrawableObject import BaseDrawableObject
 
@@ -34,6 +35,7 @@ class BricksTableObject:
             i = 0
             while i < len(line):
                 if line[i].collide_with_ball(ball):
+                    BRICK_COLLIDE_SOUND.play()
                     score_bar.score_up()
                     line.pop(i)
                     i -= 1
@@ -47,7 +49,6 @@ class BricksTableObject:
     def get_bricks_count(self):
         sum = 0
         for line in self.table:
-            print(len(line))
             sum += len(line)
         return sum
 

@@ -1,5 +1,6 @@
 import pygame
 
+from constants import BUTTON_SOUND
 from misc import is_point_in_rect, change_color
 from objects.interface_objects.baseTextBar import TextBar
 
@@ -22,4 +23,5 @@ class ButtonObject(TextBar):
                 self.is_hover = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             if is_point_in_rect(self.bg_rect, event.pos):
+                BUTTON_SOUND.play()
                 self.is_pressed = True

@@ -1,5 +1,6 @@
 import pygame
 
+from constants import GAME_OVER_SOUND, WIN_SOUND
 from objects.interface_objects.baseTextBar import TextBar
 from objects.interface_objects.buttonObject import ButtonObject
 from objects.interface_objects.highScoreBar import HighScoreTable
@@ -31,14 +32,18 @@ class GameOverScene(BaseScene):
             self.game.game_over = True
 
     def logic(self):
+        pygame.mixer.music.set_volume(0.5)
         if self.h_score_name.input_end and \
                 self.h_score_table.count_new_scores == 0:
+            if self.game.game_status == -1:
+                GAME_OVER_SOUND.play()
+            elif self.game.game_status == 1:
+                WIN_SOUND.play()
             result = self.h_score_name.get_content()
             score = self.game.score
             self.h_score_table.add_new_score(f'{result} {score}')
         if self.menu_button.is_pressed:
-            self.game.change_scene(self.game.SCENE_MENU)
-            self.game.game_status = 0
+            self.game.reload()
 
     def draw(self):
         if not self.h_score_name.input_end:

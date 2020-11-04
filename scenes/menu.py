@@ -1,3 +1,5 @@
+import pygame
+
 from objects.interface_objects.baseTextBar import TextBar
 from objects.interface_objects.buttonObject import ButtonObject
 from scenes.base import BaseScene
@@ -24,6 +26,7 @@ class MenuScene(BaseScene):
             self.game.game_over = True
 
     def logic(self):
+        pygame.mixer.music.set_volume(0.5)
         if self.btn_start.is_pressed:
             self.btn_start.is_pressed = False
             self.game.infinite = False

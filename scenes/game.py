@@ -30,6 +30,7 @@ class GameScene(BaseScene):
             self.game_over(-1)
 
     def logic(self):
+        pygame.mixer.music.set_volume(1)
         super(GameScene, self).logic()
         self.moving_platform.collide_with_ball(self.ball)
         if self.ball.is_game_over():

@@ -2,6 +2,7 @@ from random import randint
 
 import pygame
 
+from constants import PLATFORM_COLLIDE_SOUND
 from objects.gameplay_objects.baseDrawableObject import BaseDrawableObject
 from objects.gameplay_objects.helpPoint import HelpPoint
 
@@ -28,6 +29,7 @@ class Platform(BaseDrawableObject):
 
     def collide_with_ball(self, ball):
         if super(Platform, self).collide_with_ball(ball):
+            PLATFORM_COLLIDE_SOUND.play()
             ball.vector.speed_up()
             # Продвигаем с ускорением, чтобы избежать лишних коллизий
             ball.vector.change_x(abs(self.vec_x * self.speed))
