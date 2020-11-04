@@ -27,37 +27,29 @@ class Platform(BaseDrawableObject):
                 self.vec_x += 1
 
     def collide_with_ball(self, ball):
-        collisions = [
-            self.sides_collision(ball),
-            self.angles_collision(ball)
-        ]
-        if collisions[0] or collisions[1]:
-            if collisions[0]:
-                ball.horizontal_collision_reaction()
-            elif collisions[1]:
-                ball.angle_collision_reaction()
+        if super(Platform, self).collide_with_ball(ball):
             ball.vector.speed_up()
             # Продвигаем с ускорением, чтобы избежать лишних коллизий
             ball.vector.change_x(abs(self.vec_x * self.speed))
             ball.move()
             ball.vector.change_x(-abs(self.vec_x * self.speed))
-            ball.change_radius(20, 30)
+            ball.change_radius(-1)
             return True
         return False
 
-    def sides_collision(self, ball):
-        p = (ball.center_x, ball.center_y + ball.radius)
-        return self.rect.collidepoint(p)
-
-    def angles_collision(self, ball):
-        angles_points = [
-            HelpPoint(self.rect.x, self.rect.y),
-            HelpPoint(self.rect.x + self.rect.w, self.rect.y)
-        ]
-        for i in range(len(angles_points)):
-            if pygame.sprite.collide_circle(ball, angles_points[i]):
-                return True
-        return False
+    # def sides_collision(self, ball):
+    #     p = (ball.center_x, ball.center_y + ball.radius)
+    #     return self.rect.collidepoint(p)
+    #
+    # def angles_collision(self, ball):
+    #     angles_points = [
+    #         HelpPoint(self.rect.x, self.rect.y),
+    #         HelpPoint(self.rect.x + self.rect.w, self.rect.y)
+    #     ]
+    #     for i in range(len(angles_points)):
+    #         if pygame.sprite.collide_circle(ball, angles_points[i]):
+    #             return True
+    #     return False
 
     def logic(self):
         self.move()

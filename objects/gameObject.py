@@ -21,6 +21,11 @@ class Game:
             GameScene(self),
             GameOverScene(self)
         ]
+        # 0 - process
+        # 1 - win
+        # -1 - fail
+        self.game_status = 0
+        self.infinite = False
         self.game_over = False
         self.input_time = False
         self.score = 0

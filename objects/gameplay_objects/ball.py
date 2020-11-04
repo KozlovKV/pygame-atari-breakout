@@ -7,12 +7,14 @@ from objects.gameplay_objects.speedVector import SpeedVector
 
 
 class Ball(BaseDrawableObject):
-    def __init__(self, game, vector, color=(196, 32, 32), x=400, y=500, r=25):
+    def __init__(self, game, vector, color=(196, 32, 32), x=400, y=500, r=25,
+                 min_r=16):
         super().__init__(game, x-r, y-r, 2*r, 2*r, color)
         self.vector = SpeedVector(vector[0], vector[1])
         self.center_x = x
         self.center_y = y
         self.radius = r
+        self.min_radius = min_r
         self.border_collision = False
 
     def logic(self):
@@ -23,18 +25,13 @@ class Ball(BaseDrawableObject):
         self.center_y += self.vector.get_y()
         if self.center_x < self.radius or \
                 self.center_x > self.game.screen.get_width() - self.radius:
-            if not self.border_collision:
-                self.border_collision = True
-                self.vector.invert_x()
-            else:
-                self.border_collision = False
-        if self.center_y < self.radius \
-                or self.center_y > self.game.screen.get_height() - self.radius:
-            if not self.border_collision:
-                self.border_collision = True
-                self.vector.invert_y()
-            else:
-                self.border_collision = False
+            self.vector.invert_x()
+            self.center_x += self.vector.get_x()
+            self.center_y += self.vector.get_y()
+        if self.center_y < self.radius:
+            self.vector.invert_y()
+            self.center_x += self.vector.get_x()
+            self.center_y += self.vector.get_y()
         self.rect.x = self.center_x - self.radius
         self.rect.y = self.center_y - self.radius
 
@@ -47,8 +44,10 @@ class Ball(BaseDrawableObject):
     def angle_collision_reaction(self):
         self.vector.invert_vector()
 
-    def change_radius(self, left, right):
-        self.radius = randint(left, right)
+    def change_radius(self, delta):
+        self.radius += delta
+        self.radius = self.radius if self.radius >= self.min_radius \
+            else self.min_radius
 
     def is_game_over(self):
         # return False
