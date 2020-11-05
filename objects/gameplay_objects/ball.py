@@ -1,4 +1,4 @@
-from random import randint
+from random import randint, choice
 
 import pygame
 
@@ -7,8 +7,8 @@ from objects.gameplay_objects.speedVector import SpeedVector
 
 
 class Ball(BaseDrawableObject):
-    def __init__(self, game, vector, color=(196, 32, 32), x=400, y=500, r=25,
-                 min_r=16):
+    def __init__(self, game, vector, color=(196, 32, 32), x=400, y=500, r=35,
+                 min_r=25):
         super().__init__(game, x-r, y-r, 2*r, 2*r, color)
         self.vector = SpeedVector(vector[0], vector[1])
         self.center_x = x
@@ -36,13 +36,20 @@ class Ball(BaseDrawableObject):
         self.rect.y = self.center_y - self.radius
 
     def horizontal_collision_reaction(self):
+        cos_ = self.vector.x / self.vector.y
         self.vector.invert_y()
+        self.vector.change_vector(choice((-0.5, 0, 0.5)))
+        self.vector.multiply(cos_ + 0.25)
 
     def vertical_collision_reaction(self):
+        cos_ = self.vector.y / self.vector.x
         self.vector.invert_x()
+        self.vector.change_vector(choice((-0.5, 0, 0.5)))
+        self.vector.multiply(cos_ + 0.1)
 
     def angle_collision_reaction(self):
         self.vector.invert_vector()
+        self.vector.change_vector(0.5)
 
     def change_radius(self, delta):
         self.radius += delta
@@ -50,7 +57,6 @@ class Ball(BaseDrawableObject):
             else self.min_radius
 
     def is_game_over(self):
-        # return False
         return self.center_y + self.radius >= self.game.HEIGHT + 3
 
     def draw(self):

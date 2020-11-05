@@ -1,6 +1,17 @@
 class SpeedVector:
-    def __init__(self, x, y, max_=6):
-        self.max_speed = max_
+    MAX = 6
+    MIN = 2
+
+    @staticmethod
+    def change_one_coord(prev, delta):
+        new_coord = prev + delta
+        if new_coord < SpeedVector.MIN:
+            new_coord = SpeedVector.MIN
+        elif prev > SpeedVector.MAX:
+            new_coord = SpeedVector.MAX
+        return new_coord
+
+    def __init__(self, x, y):
         self.x_move = -1 if x < 0 else 1
         self.y_move = -1 if y < 0 else 1
         self.x = abs(x)
@@ -15,6 +26,9 @@ class SpeedVector:
     def get_vector(self):
         return self.get_x(), self.get_y()
 
+    def get_length(self):
+        return (self.x ** 2 + self.y ** 2) ** 0.5
+
     def invert_x(self):
         self.x_move *= -1
 
@@ -25,19 +39,22 @@ class SpeedVector:
         self.invert_x()
         self.invert_y()
 
+    def multiply(self, k):  # 0.25 < k < 1.25
+        self.x *= k
+        self.y *= k
+
     def change_x(self, delta):
-        self.x += delta
+        self.x = SpeedVector.change_one_coord(self.x, delta)
+        if self.x < 0:
+            self.x = abs(self.x)
+            self.x_move *= -1
 
     def change_y(self, delta):
-        self.y += delta
+        self.y = SpeedVector.change_one_coord(self.y, delta)
+        if self.y < 0:
+            self.y = abs(self.y)
+            self.y_move *= -1
 
-    def speed_up(self, delta=1):
-        self.x = self.x + delta \
-            if self.x + delta <= self.max_speed else self.max_speed
-        self.y = self.y + delta \
-            if self.y + delta <= self.max_speed else self.max_speed
-
-    def speed_down(self, delta=1):
-        self.x -= delta
-        self.y -= delta
-        self.__init__(self.x, self.y)
+    def change_vector(self, delta):
+        self.change_x(delta)
+        self.change_y(delta)
